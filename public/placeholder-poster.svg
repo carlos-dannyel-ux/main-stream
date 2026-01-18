@@ -1,0 +1,6 @@
+<svg width="200" height="300" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="300" fill="#1a1a1a"/>
+  <rect x="40" y="100" width="120" height="80" rx="4" fill="#2a2a2a"/>
+  <path d="M90 120 L120 140 L90 160 Z" fill="#4a4a4a"/>
+  <text x="100" y="220" text-anchor="middle" fill="#666" font-family="Arial" font-size="12">Sem Imagem</text>
+</svg>

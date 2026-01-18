@@ -1,0 +1,93 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import { MediaItem } from '@/types/tmdb';
+import MediaCard from './MediaCard';
+
+interface MediaRowProps {
+    title: string;
+    items: MediaItem[];
+    showRank?: boolean;
+}
+
+export default function MediaRow({ title, items, showRank = false }: MediaRowProps) {
+    const rowRef = useRef<HTMLDivElement>(null);
+    const [showLeftArrow, setShowLeftArrow] = useState(false);
+    const [showRightArrow, setShowRightArrow] = useState(true);
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (!rowRef.current) return;
+
+        const scrollAmount = rowRef.current.clientWidth * 0.8;
+        const newScrollLeft = direction === 'left'
+            ? rowRef.current.scrollLeft - scrollAmount
+            : rowRef.current.scrollLeft + scrollAmount;
+
+        rowRef.current.scrollTo({
+            left: newScrollLeft,
+            behavior: 'smooth',
+        });
+    };
+
+    const handleScroll = () => {
+        if (!rowRef.current) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
+        setShowLeftArrow(scrollLeft > 0);
+        setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    };
+
+    if (!items || items.length === 0) return null;
+
+    return (
+        <section className="relative py-4 sm:py-6 lg:py-8">
+            {/* Title */}
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 px-4 sm:px-6 lg:px-8">
+                {title}
+            </h2>
+
+            {/* Row Container */}
+            <div className="relative group">
+                {/* Left Arrow */}
+                <button
+                    onClick={() => scroll('left')}
+                    className={`absolute left-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-center transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
+                    aria-label="Scroll left"
+                >
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                {/* Scrollable Row */}
+                <div
+                    ref={rowRef}
+                    onScroll={handleScroll}
+                    className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-2"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                    {items.map((item, index) => (
+                        <MediaCard
+                            key={item.id}
+                            item={item}
+                            rank={showRank ? index + 1 : undefined}
+                        />
+                    ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                    onClick={() => scroll('right')}
+                    className={`absolute right-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-l from-black/80 to-transparent flex items-center justify-center transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
+                    aria-label="Scroll right"
+                >
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+    );
+}
