@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import StreamPlayer from './StreamPlayer';
+import { useRouter } from 'next/navigation';
 
 interface Episode {
     episode_number: number;
@@ -17,22 +18,31 @@ interface Season {
 
 interface SeriesSelectorProps {
     id: number;
+    imdbId: string | null;
     seasons: Season[];
     initialSeason?: number;
     initialEpisode?: number;
+    slug: string;
 }
 
-export default function SeriesSelector({ id, seasons }: SeriesSelectorProps) {
-    const [activeSeason, setActiveSeason] = useState(1);
-    const [activeEpisode, setActiveEpisode] = useState(1);
+export default function SeriesSelector({ id, imdbId, seasons, initialSeason = 1, initialEpisode = 1, slug }: SeriesSelectorProps) {
+    const router = useRouter();
+    const [activeSeason, setActiveSeason] = useState(initialSeason);
+    const [activeEpisode, setActiveEpisode] = useState(initialEpisode);
 
     const currentSeason = seasons.find(s => s.season_number === activeSeason) || seasons[0];
+
+    const handleEpisodeChange = (s: number, e: number) => {
+        setActiveSeason(s);
+        setActiveEpisode(e);
+        router.push(`/series/${slug}/temporada/${s}/episodio/${e}?id=${id}`, { scroll: false });
+    };
 
     return (
         <div className="space-y-8">
             {/* Player */}
             <StreamPlayer
-                id={id}
+                imdbId={imdbId}
                 type="tv"
                 season={activeSeason}
                 episode={activeEpisode}
@@ -48,8 +58,7 @@ export default function SeriesSelector({ id, seasons }: SeriesSelectorProps) {
                             <button
                                 key={season.season_number}
                                 onClick={() => {
-                                    setActiveSeason(season.season_number);
-                                    setActiveEpisode(1);
+                                    handleEpisodeChange(season.season_number, 1);
                                 }}
                                 className={`text-left px-4 py-3 rounded-lg transition-all ${activeSeason === season.season_number
                                     ? 'bg-red-600 text-white font-bold'
@@ -69,7 +78,7 @@ export default function SeriesSelector({ id, seasons }: SeriesSelectorProps) {
                         {Array.from({ length: currentSeason.episode_count }, (_, i) => i + 1).map((ep) => (
                             <button
                                 key={ep}
-                                onClick={() => setActiveEpisode(ep)}
+                                onClick={() => handleEpisodeChange(activeSeason, ep)}
                                 className={`aspect-square flex flex-col items-center justify-center rounded-lg border transition-all ${activeEpisode === ep
                                     ? 'bg-red-600 border-red-500 text-white font-bold shadow-lg shadow-red-600/20'
                                     : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30 hover:text-white'}`}

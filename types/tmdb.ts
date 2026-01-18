@@ -52,6 +52,7 @@ export interface TMDBGenre {
 }
 
 export interface TMDBMovieDetails extends TMDBMovie {
+  imdb_id: string | null;
   genres: TMDBGenre[];
   runtime: number;
   tagline: string;
@@ -66,6 +67,7 @@ export interface TMDBMovieDetails extends TMDBMovie {
 }
 
 export interface TMDBSeriesDetails extends TMDBSeries {
+  imdb_id: string | null;
   genres: TMDBGenre[];
   number_of_seasons: number;
   number_of_episodes: number;

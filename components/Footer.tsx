@@ -8,8 +8,10 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 {/* Logo and Social */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                    <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-                        MAIN STREAM
+                    <Link href="/" className="flex items-center space-x-2">
+                        <span className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                            MAIN STREAM
+                        </span>
                     </Link>
 
                     <div className="flex items-center gap-4">
@@ -52,8 +54,8 @@ export default function Footer() {
                     <div className="col-span-2 sm:col-span-1 lg:col-span-2">
                         <h4 className="text-white font-semibold mb-3 text-sm">Sobre</h4>
                         <p className="text-gray-400 text-sm">
-                            Main Stream é uma plataforma de streaming que oferece os melhores filmes e séries.
-                            Dados fornecidos por TMDB.
+                            Main Stream é uma plataforma de streaming premium.
+                            Dados fornecidos por IMDb e vídeos via SuperFlixAPI.
                         </p>
                     </div>
                 </div>
@@ -64,7 +66,7 @@ export default function Footer() {
                         © {currentYear} Main Stream. Todos os direitos reservados.
                     </p>
                     <p className="text-gray-500 text-xs">
-                        Powered by <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">TMDB</a>
+                        Powered by <a href="https://www.imdb.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">IMDb</a>
                     </p>
                 </div>
             </div>

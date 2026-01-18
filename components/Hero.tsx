@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { MediaItem, TMDBVideo } from '@/types/tmdb';
-import { getBackdropUrl, getTitle, getReleaseYear, isMovie, getTrailerKey } from '@/lib/tmdb';
+import { getBackdropUrl, getTitle, getReleaseYear, isMovie, getTrailerKey, slugify } from '@/lib/tmdb';
 import TrailerModal from './TrailerModal';
 
 interface HeroProps {
@@ -80,7 +80,7 @@ export default function Hero({ item, videos = [] }: HeroProps) {
                             {/* Buttons */}
                             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                 <Link
-                                    href={`/${isMovie(item) ? 'movie' : 'tv'}/${item.id}`}
+                                    href={`/assistir/${slugify(getTitle(item))}?id=${item.id}`}
                                     className="flex items-center justify-center gap-2 px-8 py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all active:scale-95 shadow-lg shadow-red-600/20"
                                 >
                                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

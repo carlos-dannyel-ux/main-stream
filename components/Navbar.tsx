@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import Search from './Search';
 
 export default function Navbar() {
@@ -39,9 +40,15 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-16 lg:h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-                            MAIN STREAM
-                        </span>
+                        <div className="relative w-32 h-10 lg:w-40 lg:h-12">
+                            <Image
+                                src="/logo/logo.png"
+                                alt="Main Stream"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
                     </Link>
 
                     {/* Search - Desktop and Mobile (Optimized) */}

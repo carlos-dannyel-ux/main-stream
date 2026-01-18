@@ -71,7 +71,9 @@ export async function getNowPlayingMovies(): Promise<TMDBResponse<TMDBMovie>> {
 }
 
 export async function getMovieDetails(id: number): Promise<TMDBMovieDetails> {
-    return fetchTMDBDirect(`/movie/${id}?language=pt-BR`);
+    const movie = await fetchTMDBDirect<TMDBMovieDetails>(`/movie/${id}?language=pt-BR`);
+    const externalIds = await fetchTMDBDirect<{ imdb_id: string }>(`/movie/${id}/external_ids`);
+    return { ...movie, imdb_id: externalIds.imdb_id || movie.imdb_id };
 }
 
 export async function getMovieVideos(id: number): Promise<TMDBVideoResponse> {
@@ -100,7 +102,9 @@ export async function getAiringSeries(): Promise<TMDBResponse<TMDBSeries>> {
 }
 
 export async function getSeriesDetails(id: number): Promise<TMDBSeriesDetails> {
-    return fetchTMDBDirect(`/tv/${id}?language=pt-BR`);
+    const series = await fetchTMDBDirect<TMDBSeriesDetails>(`/tv/${id}?language=pt-BR`);
+    const externalIds = await fetchTMDBDirect<{ imdb_id: string }>(`/tv/${id}/external_ids`);
+    return { ...series, imdb_id: externalIds.imdb_id };
 }
 
 export async function getSeriesVideos(id: number): Promise<TMDBVideoResponse> {
@@ -146,4 +150,23 @@ export function getReleaseYear(item: MediaItem): string {
         ? (item as TMDBMovie).release_date
         : (item as TMDBSeries).first_air_date;
     return date ? new Date(date).getFullYear().toString() : '';
+}
+
+// Slugify helper
+export function slugify(text: string): string {
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '')
+        .replace(/--+/g, '-');
+}
+
+// Search by title for specific items (used for slug-only routing)
+export async function searchByTitle(title: string, type: 'movie' | 'tv'): Promise<MediaItem | null> {
+    const response = await fetchTMDBDirect<TMDBResponse<MediaItem>>(`/search/${type}?query=${encodeURIComponent(title)}&language=pt-BR`);
+    return response.results.length > 0 ? response.results[0] : null;
 }

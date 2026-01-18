@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { MediaItem } from '@/types/tmdb';
-import { getImageUrl, getTitle, getReleaseYear, isMovie } from '@/lib/tmdb';
+import { getImageUrl, getTitle, getReleaseYear, isMovie, slugify } from '@/lib/tmdb';
 
 interface MediaCardProps {
     item: MediaItem;
@@ -17,11 +17,12 @@ export default function MediaCard({ item, rank }: MediaCardProps) {
 
     const title = getTitle(item);
     const year = getReleaseYear(item);
-    const type = isMovie(item) ? 'movie' : 'tv';
+    const typePath = 'assistir';
+    const slug = slugify(title);
 
     return (
         <Link
-            href={`/${type}/${item.id}`}
+            href={`/${typePath}/${slug}?id=${item.id}`}
             className="group relative flex-shrink-0 w-[110px] sm:w-[160px] md:w-[180px] lg:w-[200px] touch-scroll-item transition-all active:scale-95"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

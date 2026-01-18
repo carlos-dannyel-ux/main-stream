@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MediaItem } from '@/types/tmdb';
-import { getTitle, getReleaseYear, getImageUrl, isMovie } from '@/lib/tmdb';
+import { getTitle, getReleaseYear, getImageUrl, isMovie, slugify } from '@/lib/tmdb';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -74,12 +74,13 @@ export default function Search() {
                     {results.map((item) => {
                         const title = getTitle(item);
                         const year = getReleaseYear(item);
-                        const type = isMovie(item) ? 'movie' : 'tv';
+                        const typePath = 'assistir';
+                        const slug = slugify(title);
 
                         return (
                             <Link
                                 key={item.id}
-                                href={`/${type}/${item.id}`}
+                                href={`/${typePath}/${slug}?id=${item.id}`}
                                 onClick={() => {
                                     setShowResults(false);
                                     setQuery('');
