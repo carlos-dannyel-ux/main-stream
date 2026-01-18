@@ -69,7 +69,7 @@ export default function Navbar() {
                             >
                                 {link.label}
                                 {isActive(link.href) && (
-                                    <span className="block h-0.5 bg-gradient-to-r from-red-500 to-orange-500 mt-1 rounded-full" />
+                                    <span className="block h-0.5 bg-[#E50914] mt-1 rounded-full animate-fade-in" />
                                 )}
                             </Link>
                         ))}
@@ -108,7 +108,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`flex flex-col items-center gap-1 transition-colors duration-200 ${isActive(link.href) ? 'text-red-500' : 'text-gray-400'}`}
+                                className={`flex flex-col items-center gap-1 transition-colors duration-200 ${isActive(link.href) ? 'text-[#E50914]' : 'text-gray-400'}`}
                             >
                                 {Icon}
                                 <span className="text-[10px] font-medium">{link.label}</span>
@@ -130,7 +130,7 @@ export default function Navbar() {
                             href={link.href}
                             onClick={() => setIsMobileMenuOpen(false)}
                             className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${isActive(link.href)
-                                ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20 text-white'
+                                ? 'bg-[#E50914]/10 text-white'
                                 : 'text-gray-300 hover:bg-white/10 hover:text-white'
                                 }`}
                         >

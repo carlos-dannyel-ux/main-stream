@@ -19,6 +19,7 @@ export default function Hero({ item, videos = [] }: HeroProps) {
     const title = getTitle(item);
     const year = getReleaseYear(item);
     const trailerKey = getTrailerKey({ id: item.id, results: videos });
+    const slug = slugify(title);
 
     return (
         <>
@@ -46,57 +47,39 @@ export default function Hero({ item, videos = [] }: HeroProps) {
                 {/* Content */}
                 <div className="relative h-full flex items-end pb-12 sm:pb-16 lg:pb-24">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                        <div className="max-w-2xl">
-                            {/* Badge */}
-                            <div className="flex items-center gap-2 mb-4">
-                                <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs sm:text-sm font-semibold rounded-full">
-                                    {isMovie(item) ? 'FILME' : 'SÉRIE'}
-                                </span>
-                                {year && (
-                                    <span className="text-gray-300 text-sm">{year}</span>
-                                )}
+                        <div className="max-w-2xl space-y-6 animate-fade-in">
+                            {/* Tags */}
+                            <div className="flex items-center gap-3 text-xs font-black tracking-widest uppercase">
+                                <span className="text-[#E50914] bg-[#E50914]/10 px-2 py-1 rounded">Em Tendência</span>
+                                {year && <span className="text-gray-400">{year}</span>}
+                                <span className="text-gray-400">{item.vote_average.toFixed(1)} IMDb</span>
                             </div>
 
                             {/* Title */}
-                            <h1 className="text-4xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                            <h1 className="text-hero-title text-white">
                                 {title}
                             </h1>
 
-                            {/* Rating */}
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="flex items-center gap-1">
-                                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    <span className="text-white font-semibold">{item.vote_average.toFixed(1)}</span>
-                                </div>
-                            </div>
-
-                            {/* Overview */}
-                            <p className="text-gray-300 text-sm sm:text-base lg:text-lg line-clamp-3 sm:line-clamp-4 mb-8">
+                            {/* Description */}
+                            <p className="text-gray-300 text-sm md:text-lg lg:text-xl line-clamp-3 leading-relaxed max-w-xl">
                                 {item.overview || 'Sem descrição disponível.'}
                             </p>
 
                             {/* Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                            <div className="flex flex-wrap items-center gap-4 pt-4">
                                 <Link
-                                    href={`/assistir/${slugify(getTitle(item))}?id=${item.id}`}
-                                    className="flex items-center justify-center gap-2 px-8 py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all active:scale-95 shadow-lg shadow-red-600/20"
+                                    href={`/assistir/${slug}?id=${item.id}`}
+                                    className="px-8 py-4 bg-[#E50914] hover:bg-[#b90710] text-white font-black uppercase tracking-widest rounded-md transition-all shadow-xl shadow-red-600/20 flex items-center gap-2"
                                 >
-                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                    <span>Assistir Agora</span>
+                                    Assistir Agora
                                 </Link>
+
                                 {trailerKey && (
                                     <button
                                         onClick={() => setIsTrailerOpen(true)}
-                                        className="flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white font-bold rounded-xl hover:bg-white/20 transition-all active:scale-95 border border-white/20"
+                                        className="px-8 py-4 glass-morphism hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-md transition-all flex items-center gap-2"
                                     >
-                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                                        </svg>
-                                        <span>Trailers</span>
+                                        Trailers
                                     </button>
                                 )}
                             </div>

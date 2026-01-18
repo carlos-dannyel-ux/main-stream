@@ -9,7 +9,7 @@ export default function Footer() {
                 {/* Logo and Social */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
                     <Link href="/" className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                        <span className="text-2xl font-black text-[#E50914] tracking-tighter">
                             MAIN STREAM
                         </span>
                     </Link>

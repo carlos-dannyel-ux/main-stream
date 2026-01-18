@@ -6,6 +6,7 @@ import {
     TMDBVideoResponse,
     TMDBMovieDetails,
     TMDBSeriesDetails,
+    TMDBGenre,
     MediaItem
 } from '@/types/tmdb';
 
@@ -163,6 +164,25 @@ export function slugify(text: string): string {
         .replace(/\s+/g, '-')
         .replace(/[^\w-]+/g, '')
         .replace(/--+/g, '-');
+}
+
+// Genres
+export async function getGenres(type: 'movie' | 'tv'): Promise<TMDBGenre[]> {
+    const response = await fetchTMDBDirect<{ genres: TMDBGenre[] }>(`/genre/${type}/list?language=pt-BR`);
+    return response.genres;
+}
+
+// Discover / Full Catalog
+export async function getDiscoverMedia(
+    type: 'movie' | 'tv',
+    page: number = 1,
+    genreId?: string
+): Promise<TMDBResponse<MediaItem>> {
+    let endpoint = `/discover/${type}?language=pt-BR&page=${page}&sort_by=popularity.desc&include_adult=false`;
+    if (genreId) {
+        endpoint += `&with_genres=${genreId}`;
+    }
+    return fetchTMDBDirect(endpoint);
 }
 
 // Search by title for specific items (used for slug-only routing)

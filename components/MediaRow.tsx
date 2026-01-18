@@ -42,7 +42,7 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
     return (
         <section className="relative py-2 sm:py-6 lg:py-8 overflow-hidden">
             {/* Title */}
-            <h2 className="text-base sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-4 px-4 sm:px-6 lg:px-8">
+            <h2 className="text-section-title font-black uppercase tracking-tighter text-white px-4 sm:px-6 lg:px-8">
                 {title}
             </h2>
 
@@ -64,7 +64,7 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
                 <div
                     ref={rowRef}
                     onScroll={handleScroll}
-                    className="flex gap-2 sm:gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 touch-scroll"
+                    className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 touch-scroll"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {items.map((item, index) => (

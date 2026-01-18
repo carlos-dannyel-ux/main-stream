@@ -61,10 +61,10 @@ export default async function HomePage() {
       </Suspense>
 
       {/* Content Rows */}
-      <div className="-mt-16 relative z-10 space-y-2">
+      <div className="relative z-10 space-y-8">
         <Suspense fallback={<MediaRowSkeleton title="Em Alta" />}>
           <MediaRow
-            title="🔥 Em Alta"
+            title="Em Alta"
             items={trendingAll.results.slice(1, 20)}
             showRank
           />
@@ -72,42 +72,42 @@ export default async function HomePage() {
 
         <Suspense fallback={<MediaRowSkeleton title="Filmes Populares" />}>
           <MediaRow
-            title="🎬 Filmes Populares"
+            title="Filmes Populares"
             items={popularMovies.results}
           />
         </Suspense>
 
         <Suspense fallback={<MediaRowSkeleton title="Séries Populares" />}>
           <MediaRow
-            title="📺 Séries Populares"
+            title="Séries Populares"
             items={popularSeries.results}
           />
         </Suspense>
 
         <Suspense fallback={<MediaRowSkeleton title="Filmes em Tendência" />}>
           <MediaRow
-            title="🎥 Filmes em Tendência"
+            title="Filmes em Tendência"
             items={trendingMovies.results}
           />
         </Suspense>
 
         <Suspense fallback={<MediaRowSkeleton title="Séries em Tendência" />}>
           <MediaRow
-            title="📡 Séries em Tendência"
+            title="Séries em Tendência"
             items={trendingSeries.results}
           />
         </Suspense>
 
         <Suspense fallback={<MediaRowSkeleton title="Filmes Mais Votados" />}>
           <MediaRow
-            title="⭐ Filmes Mais Votados"
+            title="Filmes Mais Votados"
             items={topRatedMovies.results}
           />
         </Suspense>
 
         <Suspense fallback={<MediaRowSkeleton title="Séries Mais Votadas" />}>
           <MediaRow
-            title="🏆 Séries Mais Votadas"
+            title="Séries Mais Votadas"
             items={topRatedSeries.results}
           />
         </Suspense>

@@ -4,16 +4,10 @@ import { useState } from 'react';
 import StreamPlayer from './StreamPlayer';
 import { useRouter } from 'next/navigation';
 
-interface Episode {
-    episode_number: number;
-    name: string;
-    overview: string;
-}
-
 interface Season {
     season_number: number;
     episode_count: number;
-    name: string;
+    id: number;
 }
 
 interface SeriesSelectorProps {
@@ -30,61 +24,66 @@ export default function SeriesSelector({ id, imdbId, seasons, initialSeason = 1,
     const [activeSeason, setActiveSeason] = useState(initialSeason);
     const [activeEpisode, setActiveEpisode] = useState(initialEpisode);
 
-    const currentSeason = seasons.find(s => s.season_number === activeSeason) || seasons[0];
-
-    const handleEpisodeChange = (s: number, e: number) => {
+    const handleSeasonChange = (s: number) => {
         setActiveSeason(s);
-        setActiveEpisode(e);
-        router.push(`/series/${slug}/temporada/${s}/episodio/${e}?id=${id}`, { scroll: false });
+        setActiveEpisode(1);
+        router.push(`/assistir/${slug}?id=${id}&s=${s}&e=1`, { scroll: false });
     };
 
+    const handleEpisodeChange = (e: number) => {
+        setActiveEpisode(e);
+        router.push(`/assistir/${slug}?id=${id}&s=${activeSeason}&e=${e}`, { scroll: false });
+    };
+
+    const currentSeason = seasons.find(s => s.season_number === activeSeason) || seasons[0];
+
     return (
-        <div className="space-y-8">
-            {/* Player */}
-            <StreamPlayer
-                id={id}
-                type="tv"
-                season={activeSeason}
-                episode={activeEpisode}
-            />
+        <div className="flex flex-col gap-6">
+            {/* Player Container */}
+            <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-white/5">
+                <StreamPlayer
+                    id={imdbId || id.toString()}
+                    type="tv"
+                    season={activeSeason}
+                    episode={activeEpisode}
+                />
+            </div>
 
             {/* Selectors */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                {/* Seasons List */}
-                <div className="md:col-span-1">
-                    <h3 className="text-xl font-bold mb-4">Temporadas</h3>
-                    <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto scrollbar-hide pr-2">
+            <div className="space-y-6 p-4 bg-[#141414] rounded-xl border border-white/5">
+                {/* Seasons */}
+                <div>
+                    <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Temporadas</h4>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
                         {seasons.filter(s => s.season_number > 0).map((season) => (
                             <button
-                                key={season.season_number}
-                                onClick={() => {
-                                    handleEpisodeChange(season.season_number, 1);
-                                }}
-                                className={`text-left px-4 py-3 rounded-lg transition-all ${activeSeason === season.season_number
-                                    ? 'bg-red-600 text-white font-bold'
-                                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
+                                key={season.id}
+                                onClick={() => handleSeasonChange(season.season_number)}
+                                className={`px-4 py-2 rounded-md text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border ${activeSeason === season.season_number
+                                        ? 'bg-[#E50914] border-[#E50914] text-white shadow-lg shadow-red-600/20'
+                                        : 'bg-white/5 border-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                                    }`}
                             >
-                                <span className="block text-sm">Temporada {season.season_number}</span>
-                                <span className="text-[10px] opacity-60">{season.episode_count} Episódios</span>
+                                Temp {season.season_number}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Episodes Grid */}
-                <div className="md:col-span-3">
-                    <h3 className="text-xl font-bold mb-4">Episódios</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                {/* Episodes */}
+                <div>
+                    <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Episódios</h4>
+                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 gap-2">
                         {Array.from({ length: currentSeason.episode_count }, (_, i) => i + 1).map((ep) => (
                             <button
-                                key={ep}
-                                onClick={() => handleEpisodeChange(activeSeason, ep)}
-                                className={`aspect-square flex flex-col items-center justify-center rounded-lg border transition-all ${activeEpisode === ep
-                                    ? 'bg-red-600 border-red-500 text-white font-bold shadow-lg shadow-red-600/20'
-                                    : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30 hover:text-white'}`}
+                                key={`${activeSeason}-${ep}`}
+                                onClick={() => handleEpisodeChange(ep)}
+                                className={`py-2 text-[10px] font-black rounded border transition-all ${activeEpisode === ep
+                                        ? 'bg-[#E50914] border-[#E50914] text-white'
+                                        : 'bg-black border-white/10 text-gray-500 hover:text-white hover:border-white/30'
+                                    }`}
                             >
-                                <span className="text-lg">{ep}</span>
-                                <span className="text-[10px] uppercase tracking-tighter opacity-60">Ep</span>
+                                EP {ep}
                             </button>
                         ))}
                     </div>

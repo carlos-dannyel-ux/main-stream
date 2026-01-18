@@ -19,17 +19,21 @@ export default function StreamPlayer({ id, type, season = 1, episode = 1 }: Stre
     // According to SuperFlixAPI docs:
     // Movies use /filme/ttID_DO_FILME
     // Series use /serie/ID_DA_SERIE/TEMPORADA/EPISODIO (TMDB ID)
-    const baseUrl = 'https://superflixapi.bond';
-    let embedUrl = '';
+    const baseUrl = type === 'movie'
+        ? `https://superflixapi.bond/filme/${id}`
+        : `https://superflixapi.bond/serie/${id}/${season}/${episode}`;
 
-    // Customization parameters from docs: #color, #noLink, etc.
-    const custom = '#color:ef4444#noLink#transparent'; // Red theme (red-500)
+    // Premium Branding Parameters
+    const params = [
+        '#color:E50914', // Netflix Red
+        '#noLink',
+        '#transparent',
+        'logo=https://mainstream.com/logo/logo.png',
+        'logo_link=https://mainstream.com',
+        'lang=pt-BR'
+    ].join('&');
 
-    if (type === 'movie') {
-        embedUrl = `${baseUrl}/filme/${id}${custom}`;
-    } else {
-        embedUrl = `${baseUrl}/serie/${id}/${season}/${episode}${custom}`;
-    }
+    const embedUrl = `${baseUrl}${params}`;
 
     return (
         <div className="mainstream-player rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
