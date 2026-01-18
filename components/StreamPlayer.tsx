@@ -1,14 +1,14 @@
 'use client';
 
 interface StreamPlayerProps {
-    imdbId: string | null;
+    id: string | number | null; // IMDb ID for movies, TMDB ID for series
     type: 'movie' | 'tv';
     season?: number;
     episode?: number;
 }
 
-export default function StreamPlayer({ imdbId, type, season = 1, episode = 1 }: StreamPlayerProps) {
-    if (!imdbId) {
+export default function StreamPlayer({ id, type, season = 1, episode = 1 }: StreamPlayerProps) {
+    if (!id) {
         return (
             <div className="w-full aspect-video bg-gray-900 rounded-xl flex items-center justify-center border border-white/5">
                 <p className="text-gray-500">Player não disponível para este título.</p>
@@ -16,10 +16,20 @@ export default function StreamPlayer({ imdbId, type, season = 1, episode = 1 }: 
         );
     }
 
-    const baseUrl = 'https://superflixapi.bond/stape/';
-    const path = type === 'movie' ? imdbId : `${imdbId}/${season}/${episode}`;
-    const branding = '?logo=https://mainstream.com/logo/logo.png&logo_link=https://mainstream.com&lang=pt-BR';
-    const embedUrl = `${baseUrl}${path}${branding}`;
+    // According to SuperFlixAPI docs:
+    // Movies use /filme/ttID_DO_FILME
+    // Series use /serie/ID_DA_SERIE/TEMPORADA/EPISODIO (TMDB ID)
+    const baseUrl = 'https://superflixapi.bond';
+    let embedUrl = '';
+
+    // Customization parameters from docs: #color, #noLink, etc.
+    const custom = '#color:ef4444#noLink#transparent'; // Red theme (red-500)
+
+    if (type === 'movie') {
+        embedUrl = `${baseUrl}/filme/${id}${custom}`;
+    } else {
+        embedUrl = `${baseUrl}/serie/${id}/${season}/${episode}${custom}`;
+    }
 
     return (
         <div className="mainstream-player rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">

@@ -42,7 +42,7 @@ export default function SeriesSelector({ id, imdbId, seasons, initialSeason = 1,
         <div className="space-y-8">
             {/* Player */}
             <StreamPlayer
-                imdbId={imdbId}
+                id={id}
                 type="tv"
                 season={activeSeason}
                 episode={activeEpisode}

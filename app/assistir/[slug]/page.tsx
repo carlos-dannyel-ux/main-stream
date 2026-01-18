@@ -143,7 +143,7 @@ export default async function WatchPage({ params, searchParams }: WatchPageProps
                 <div className="mb-12">
                     {type === 'movie' ? (
                         <Suspense fallback={<div className="w-full aspect-video bg-gray-900 animate-pulse rounded-xl" />}>
-                            <StreamPlayer imdbId={item.imdb_id} type="movie" />
+                            <StreamPlayer id={item.imdb_id} type="movie" />
                         </Suspense>
                     ) : (
                         <Suspense fallback={<div className="w-full aspect-video bg-gray-900 animate-pulse rounded-xl" />}>
