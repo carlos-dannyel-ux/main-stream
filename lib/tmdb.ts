@@ -112,6 +112,11 @@ export async function getTrendingAll(): Promise<TMDBResponse<MediaItem>> {
     return fetchTMDBDirect('/trending/all/week?language=pt-BR');
 }
 
+// Search
+export async function searchMulti(query: string, page: number = 1): Promise<TMDBResponse<MediaItem>> {
+    return fetchTMDBDirect(`/search/multi?query=${encodeURIComponent(query)}&page=${page}&language=pt-BR&include_adult=false`);
+}
+
 // Get trailer from videos
 export function getTrailerKey(videos: TMDBVideoResponse): string | null {
     const trailer = videos.results.find(

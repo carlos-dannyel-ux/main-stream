@@ -22,13 +22,13 @@ export default function MediaCard({ item, rank }: MediaCardProps) {
     return (
         <Link
             href={`/${type}/${item.id}`}
-            className="group relative flex-shrink-0 w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px]"
+            className="group relative flex-shrink-0 w-[110px] sm:w-[160px] md:w-[180px] lg:w-[200px] touch-scroll-item transition-all active:scale-95"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Rank Badge */}
             {rank && (
-                <div className="absolute -left-2 -top-2 z-10 w-8 h-8 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                <div className="absolute -left-1 -top-1 z-10 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-[10px] sm:text-sm shadow-lg">
                     {rank}
                 </div>
             )}
@@ -52,17 +52,16 @@ export default function MediaCard({ item, rank }: MediaCardProps) {
                     </div>
                 )}
 
-                {/* Hover Overlay */}
+                {/* Metadata Overlay - Always partially visible on mobile, full on hover */}
                 <div
-                    className={`absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'
-                        }`}
+                    className={`absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent transition-opacity duration-300 md:${isHovered ? 'opacity-100' : 'opacity-0'} ${isHovered ? 'opacity-100' : 'opacity-100'}`}
                 >
-                    <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <h3 className="text-white font-semibold text-sm line-clamp-2 mb-1">{title}</h3>
-                        <div className="flex items-center gap-2 text-xs">
-                            {year && <span className="text-gray-300">{year}</span>}
-                            <div className="flex items-center gap-1">
-                                <svg className="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
+                        <h3 className="text-white font-semibold text-[10px] sm:text-sm line-clamp-2 mb-0.5 sm:mb-1 leading-tight">{title}</h3>
+                        <div className="flex items-center gap-1.5 text-[8px] sm:text-xs text-gray-300">
+                            {year && <span>{year}</span>}
+                            <div className="flex items-center gap-0.5">
+                                <svg className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                                 <span className="text-white">{item.vote_average.toFixed(1)}</span>

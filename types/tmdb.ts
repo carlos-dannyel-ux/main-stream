@@ -76,6 +76,15 @@ export interface TMDBSeriesDetails extends TMDBSeries {
     id: number;
     name: string;
   }[];
+  seasons: {
+    air_date: string;
+    episode_count: number;
+    id: number;
+    name: string;
+    overview: string;
+    poster_path: string | null;
+    season_number: number;
+  }[];
 }
 
 export interface TMDBResponse<T> {

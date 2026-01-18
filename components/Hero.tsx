@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import Link from 'next/link';
 import { MediaItem, TMDBVideo } from '@/types/tmdb';
 import { getBackdropUrl, getTitle, getReleaseYear, isMovie, getTrailerKey } from '@/lib/tmdb';
 import TrailerModal from './TrailerModal';
@@ -21,7 +22,7 @@ export default function Hero({ item, videos = [] }: HeroProps) {
 
     return (
         <>
-            <section className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[85vh] min-h-[400px]">
+            <section className="relative w-full h-[75vh] sm:h-[70vh] lg:h-[85vh] min-h-[500px] sm:min-h-[400px]">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     {!imageError && item.backdrop_path ? (
@@ -57,7 +58,7 @@ export default function Hero({ item, videos = [] }: HeroProps) {
                             </div>
 
                             {/* Title */}
-                            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                            <h1 className="text-4xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">
                                 {title}
                             </h1>
 
@@ -72,29 +73,32 @@ export default function Hero({ item, videos = [] }: HeroProps) {
                             </div>
 
                             {/* Overview */}
-                            <p className="text-gray-300 text-sm sm:text-base lg:text-lg line-clamp-3 sm:line-clamp-4 mb-6">
+                            <p className="text-gray-300 text-sm sm:text-base lg:text-lg line-clamp-3 sm:line-clamp-4 mb-8">
                                 {item.overview || 'Sem descrição disponível.'}
                             </p>
 
                             {/* Buttons */}
-                            <div className="flex flex-wrap gap-3 sm:gap-4">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                <Link
+                                    href={`/${isMovie(item) ? 'movie' : 'tv'}/${item.id}`}
+                                    className="flex items-center justify-center gap-2 px-8 py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all active:scale-95 shadow-lg shadow-red-600/20"
+                                >
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                    <span>Assistir Agora</span>
+                                </Link>
                                 {trailerKey && (
                                     <button
                                         onClick={() => setIsTrailerOpen(true)}
-                                        className="flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                                        className="flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white font-bold rounded-xl hover:bg-white/20 transition-all active:scale-95 border border-white/20"
                                     >
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                                         </svg>
-                                        <span>Assistir Trailer</span>
+                                        <span>Trailers</span>
                                     </button>
                                 )}
-                                <button className="flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/30 transition-colors border border-white/30">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>Mais Informações</span>
-                                </button>
                             </div>
                         </div>
                     </div>

@@ -40,18 +40,18 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
     if (!items || items.length === 0) return null;
 
     return (
-        <section className="relative py-4 sm:py-6 lg:py-8">
+        <section className="relative py-2 sm:py-6 lg:py-8 overflow-hidden">
             {/* Title */}
-            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 px-4 sm:px-6 lg:px-8">
+            <h2 className="text-base sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-4 px-4 sm:px-6 lg:px-8">
                 {title}
             </h2>
 
             {/* Row Container */}
             <div className="relative group">
-                {/* Left Arrow */}
+                {/* Left Arrow - Hidden on Mobile */}
                 <button
                     onClick={() => scroll('left')}
-                    className={`absolute left-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-center transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    className={`hidden md:flex absolute left-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-r from-black/80 to-transparent items-center justify-center transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
                         }`}
                     aria-label="Scroll left"
                 >
@@ -64,7 +64,7 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
                 <div
                     ref={rowRef}
                     onScroll={handleScroll}
-                    className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-2"
+                    className="flex gap-2 sm:gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 touch-scroll"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {items.map((item, index) => (
@@ -76,10 +76,10 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
                     ))}
                 </div>
 
-                {/* Right Arrow */}
+                {/* Right Arrow - Hidden on Mobile */}
                 <button
                     onClick={() => scroll('right')}
-                    className={`absolute right-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-l from-black/80 to-transparent flex items-center justify-center transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    className={`hidden md:flex absolute right-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-l from-black/80 to-transparent items-center justify-center transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
                         }`}
                     aria-label="Scroll right"
                 >
