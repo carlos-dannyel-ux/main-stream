@@ -8,11 +8,12 @@ import Search from './Search';
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 0);
+            setIsScrolled(window.scrollY > 50);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -21,10 +22,8 @@ export default function Navbar() {
 
     const navLinks = [
         { href: '/', label: 'Início' },
-        { href: '/series', label: 'Séries' },
         { href: '/filmes', label: 'Filmes' },
-        { href: '/bombando', label: 'Bombando' },
-        { href: '/minha-lista', label: 'Minha Lista' },
+        { href: '/series', label: 'Séries' },
     ];
 
     const isActive = (href: string) => {
@@ -34,108 +33,112 @@ export default function Navbar() {
 
     return (
         <nav
-            className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-500 h-[70px] flex items-center px-4 md:px-12 ${isScrolled ? 'bg-[#141414]' : 'bg-gradient-to-b from-black/70 to-transparent'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/95 backdrop-blur-sm shadow-lg' : 'bg-gradient-to-b from-black/80 to-transparent'
                 }`}
         >
-            {/* Left: Logo & Desktop Links */}
-            <div className="flex items-center flex-1">
-                <Link href="/" className="mr-8 shrink-0">
-                    <div className="relative w-28 h-8">
-                        <Image
-                            src="/logo/logo.png"
-                            alt="Netflix"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
-                </Link>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16 lg:h-20">
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center space-x-2">
+                        <div className="relative w-32 h-10 lg:w-40 lg:h-12">
+                            <Image
+                                src="/logo/logo.png"
+                                alt="Main Stream"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+                    </Link>
 
-                <div className="hidden lg:flex items-center space-x-5">
+                    {/* Search - Desktop and Mobile (Optimized) */}
+                    <div className="flex-1 max-w-md mx-4 md:mx-8">
+                        <Search />
+                    </div>
+
+                    {/* Desktop Navigation */}
+                    <div className="hidden md:flex items-center space-x-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`text-sm lg:text-base font-medium transition-colors duration-200 ${isActive(link.href)
+                                    ? 'text-white'
+                                    : 'text-gray-300 hover:text-white'
+                                    }`}
+                            >
+                                {link.label}
+                                {isActive(link.href) && (
+                                    <span className="block h-0.5 bg-[#E50914] mt-1 rounded-full animate-fade-in" />
+                                )}
+                            </Link>
+                        ))}
+                    </div>
+
+                    {/* Mobile Menu Button - Optional since we'll have bottom nav */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                        aria-label="Menu"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {isMobileMenuOpen ? (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Bottom Navigation */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-t border-white/10 px-6 py-2">
+                <div className="flex items-center justify-between">
+                    {navLinks.map((link) => {
+                        const Icon = link.href === '/' ? (
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                        ) : link.href === '/filmes' ? (
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
+                        ) : (
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        );
+
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`flex flex-col items-center gap-1 transition-colors duration-200 ${isActive(link.href) ? 'text-[#E50914]' : 'text-gray-400'}`}
+                            >
+                                {Icon}
+                                <span className="text-[10px] font-medium">{link.label}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <div
+                className={`md:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+            >
+                <div className="bg-black/95 backdrop-blur-sm px-4 py-4 space-y-2">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`text-sm transition-colors duration-300 hover:text-gray-300 ${isActive(link.href) ? 'font-bold text-white' : 'text-white'
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${isActive(link.href)
+                                ? 'bg-[#E50914]/10 text-white'
+                                : 'text-gray-300 hover:bg-white/10 hover:text-white'
                                 }`}
                         >
                             {link.label}
                         </Link>
                     ))}
                 </div>
-
-                {/* Mobile "Navegar" Dropdown Placeholder */}
-                <div className="lg:hidden text-white text-sm font-bold flex items-center gap-1 cursor-pointer">
-                    Navegar
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5H7z" />
-                    </svg>
-                </div>
-            </div>
-
-            {/* Right: Search, Notifications, Profile */}
-            <div className="flex items-center space-x-6 text-white text-sm">
-                <div className="hidden sm:block">
-                    <Search />
-                </div>
-
-                <button className="hidden sm:block hover:text-gray-300 transition-colors">
-                    Infantil
-                </button>
-
-                <button className="relative p-1 hover:text-gray-300 transition-colors">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                    </svg>
-                    {/* Badge */}
-                    <span className="absolute top-0 right-0 w-4 h-4 bg-red-600 text-[10px] rounded-full flex items-center justify-center border border-[#141414]">1</span>
-                </button>
-
-                <div className="flex items-center gap-2 group cursor-pointer">
-                    <div className="relative w-8 h-8 rounded shrink-0 overflow-hidden bg-blue-500">
-                        <Image
-                            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-                            alt="Profile"
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                    <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5H7z" />
-                    </svg>
-                </div>
-            </div>
-
-            {/* Mobile Top Tabs (Séries, Filmes, Categorias) - Visible on mobile only */}
-            <div className={`lg:hidden fixed top-[70px] left-0 right-0 z-[90] flex items-center justify-center gap-8 py-2 transition-colors duration-500 ${isScrolled ? 'bg-[#141414]/90 backdrop-blur-md' : 'bg-transparent'}`}>
-                <Link href="/series" className="text-white text-sm font-medium">Séries</Link>
-                <Link href="/filmes" className="text-white text-sm font-medium">Filmes</Link>
-                <div className="flex items-center gap-1 text-white text-sm font-medium cursor-pointer">
-                    Categorias
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5H7z" />
-                    </svg>
-                </div>
-            </div>
-
-            {/* Mobile Bottom Navigation - Kept for UX convenience on mobile as per screenshot */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#121212] border-t border-white/5 px-6 py-2 pb-safe-area flex items-center justify-between">
-                <Link href="/" className={`flex flex-col items-center gap-1 ${pathname === '/' ? 'text-white' : 'text-gray-400'}`}>
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
-                    <span className="text-[10px]">Início</span>
-                </Link>
-                <Link href="/novidades" className="flex flex-col items-center gap-1 text-gray-400">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                    <span className="text-[10px]">Novidades</span>
-                </Link>
-                <div className="flex flex-col items-center gap-1 text-gray-400">
-                    <div className="relative w-6 h-6 rounded bg-blue-500 overflow-hidden">
-                        <Image src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="" fill className="object-cover" />
-                    </div>
-                    <span className="text-[10px]">Minha Net</span>
-                </div>
             </div>
         </nav>
     );
 }
-
