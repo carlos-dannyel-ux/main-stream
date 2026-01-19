@@ -4,15 +4,12 @@
 
 @layer base {
   :root {
-    --background: #0B0B0B;
+    --background: #141414;
     --foreground: #FFFFFF;
-    --surface: #141414;
-    --card: #1F1F1F;
-    --accent: #E5091 red-600;
-    /* Standard red-600 fallback */
-    --accent-premium: #E50914;
-    /* Netflix Red */
+    --surface: #181818;
+    --netflix-red: #E50914;
     --text-muted: #B3B3B3;
+    --nav-height: 70px;
   }
 
   * {
@@ -42,44 +39,30 @@
   h4,
   h5,
   h6 {
-    font-family: 'Poppins', 'Inter', sans-serif;
     font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
   }
 }
 
-/* Premium Layout Utilities */
-.container-premium {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: clamp(1rem, 4vw, 2.5rem);
+/* Netflix Specific Utilities */
+.netflix-shadow {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Typography Clamps */
-.text-hero-title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 900;
-  line-height: 1.1;
+.netflix-gradient-bottom {
+  background: linear-gradient(to top, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0.8) 15%, rgba(20, 20, 20, 0) 100%);
 }
 
-.text-section-title {
-  font-size: clamp(1.25rem, 4vw, 1.875rem);
-  margin-bottom: clamp(1rem, 3vw, 2rem);
+.netflix-gradient-left {
+  background: linear-gradient(to right, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0) 100%);
 }
 
-/* Custom Scrollbar */
+/* Scrollbar Netflix Style */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #141414;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -91,29 +74,37 @@
   background: #444;
 }
 
-/* Animations & Transitions */
-@keyframes fadeIn {
+/* Animations */
+@keyframes netflixEntrance {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: scale(1.1);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-netflix-entrance {
+  animation: netflixEntrance 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+/* Card Hover Logic */
+.media-card-hover {
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), z-index 0s 0s;
+}
+
+.media-card-hover:hover {
+  transform: scale(1.4);
+  z-index: 50;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), z-index 0s 0s;
 }
 
 /* Skeleton Loading */
 .skeleton {
-  background: linear-gradient(90deg,
-      #1F1F1F 25%,
-      #252525 50%,
-      #1F1F1F 75%);
+  background: linear-gradient(90deg, #181818 25%, #222222 50%, #181818 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
 }
@@ -128,54 +119,6 @@
   }
 }
 
-/* UI Components */
-.glass-header {
-  background: rgba(11, 11, 11, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.3s ease;
-}
-
-.card-premium {
-  background: var(--card);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.4s ease;
-}
-
-.card-premium:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
-
-/* Line Clamp Utilities */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-}
-
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  line-clamp: 3;
-}
-
-/* Hide scrollbar utility */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -183,4 +126,20 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Top 10 Numbers Styling */
+.top-10-number {
+  -webkit-text-stroke: 4px #595959;
+  color: #141414;
+  font-size: 180px;
+  font-weight: 900;
+  line-height: normal;
+}
+
+@media (max-width: 640px) {
+  .top-10-number {
+    font-size: 100px;
+    -webkit-text-stroke: 2px #595959;
+  }
 }

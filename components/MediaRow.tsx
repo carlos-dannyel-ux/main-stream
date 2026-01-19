@@ -40,23 +40,26 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
     if (!items || items.length === 0) return null;
 
     return (
-        <section className="relative py-2 sm:py-6 lg:py-8 overflow-hidden">
+        <section className="relative group/row pt-4 md:pt-8 bg-[#141414]">
             {/* Title */}
-            <h2 className="text-section-title font-black uppercase tracking-tighter text-white px-4 sm:px-6 lg:px-8">
+            <h2 className="text-lg md:text-2xl font-bold text-[#e5e5e5] px-4 md:px-12 mb-2 md:mb-4 transition-colors hover:text-white cursor-pointer inline-flex items-center gap-2">
                 {title}
+                <span className="text-[10px] md:text-xs text-[#54b9c5] font-bold opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center">
+                    Explorar todos
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" /></svg>
+                </span>
             </h2>
 
             {/* Row Container */}
             <div className="relative group">
-                {/* Left Arrow - Hidden on Mobile */}
+                {/* Left Arrow */}
                 <button
                     onClick={() => scroll('left')}
-                    className={`hidden md:flex absolute left-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-r from-black/80 to-transparent items-center justify-center transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                        }`}
+                    className={`absolute left-0 top-0 bottom-4 z-[40] w-4 md:w-12 bg-black/50 items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 ${!showLeftArrow && 'pointer-events-none'}`}
                     aria-label="Scroll left"
                 >
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg className="w-8 h-8 text-white scale-75 md:scale-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
 
@@ -64,8 +67,7 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
                 <div
                     ref={rowRef}
                     onScroll={handleScroll}
-                    className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 touch-scroll"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    className="flex gap-1 md:gap-2 overflow-x-auto scrollbar-hide px-4 md:px-12 pb-4 touch-scroll"
                 >
                     {items.map((item, index) => (
                         <MediaCard
@@ -76,18 +78,18 @@ export default function MediaRow({ title, items, showRank = false }: MediaRowPro
                     ))}
                 </div>
 
-                {/* Right Arrow - Hidden on Mobile */}
+                {/* Right Arrow */}
                 <button
                     onClick={() => scroll('right')}
-                    className={`hidden md:flex absolute right-0 top-0 bottom-0 z-10 w-12 lg:w-16 bg-gradient-to-l from-black/80 to-transparent items-center justify-center transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                        }`}
+                    className={`absolute right-0 top-0 bottom-4 z-[40] w-4 md:w-12 bg-black/50 items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 ${!showRightArrow && 'pointer-events-none'}`}
                     aria-label="Scroll right"
                 >
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg className="w-8 h-8 text-white scale-75 md:scale-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
             </div>
         </section>
     );
 }
+

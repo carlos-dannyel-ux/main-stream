@@ -46,54 +46,51 @@ export default function CatalogGrid({ type, genres, title }: CatalogGridProps) {
     };
 
     return (
-        <section className="container-premium py-12">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase">{title}</h1>
+        <section className="px-4 md:px-12 py-8">
+            <div className="flex items-center gap-8 mb-8 sticky top-[70px] z-[80] bg-[#141414] py-4">
+                <h1 className="text-2xl md:text-3xl font-bold text-white transition-colors">{title}</h1>
 
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide no-select">
-                    <button
-                        onClick={() => handleGenreChange('')}
-                        className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${activeGenre === ''
-                                ? 'bg-[#E50914] text-white shadow-lg shadow-red-600/20'
-                                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-                            }`}
+                <div className="relative">
+                    <select
+                        onChange={(e) => handleGenreChange(e.target.value)}
+                        value={activeGenre}
+                        className="bg-black text-white text-sm font-bold border border-white px-4 py-1.5 pr-10 appearance-none cursor-pointer hover:bg-white/10 transition-colors rounded-sm"
                     >
-                        Todos
-                    </button>
-                    {genres.map(genre => (
-                        <button
-                            key={genre.id}
-                            onClick={() => handleGenreChange(genre.id.toString())}
-                            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${activeGenre === genre.id.toString()
-                                    ? 'bg-[#E50914] text-white shadow-lg shadow-red-600/20'
-                                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-                                }`}
-                        >
-                            {genre.name}
-                        </button>
-                    ))}
+                        <option value="">Gêneros</option>
+                        {genres.map(genre => (
+                            <option key={genre.id} value={genre.id.toString()}>
+                                {genre.name}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5H7z" />
+                        </svg>
+                    </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
                 {mediaItems.map((item, index) => (
-                    <div key={`${item.id}-${index}`} className="animate-fade-in" style={{ animationDelay: `${(index % 12) * 50}ms` }}>
+                    <div key={`${item.id}-${index}`} className="animate-netflix-entrance">
                         <MediaCard item={item} />
                     </div>
                 ))}
             </div>
 
             {page < totalPages && (
-                <div className="mt-16 flex justify-center">
+                <div className="mt-16 flex justify-center pb-20 md:pb-12">
                     <button
                         onClick={() => setPage(prev => prev + 1)}
                         disabled={isLoading}
-                        className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all disabled:opacity-50 border border-white/10"
+                        className="px-10 py-2 bg-transparent hover:bg-white/5 text-white font-bold border border-[#808080] rounded-sm transition-all disabled:opacity-50"
                     >
-                        {isLoading ? 'Carregando...' : 'Ver Mais'}
+                        {isLoading ? 'Carregando...' : 'Carregar mais'}
                     </button>
                 </div>
             )}
         </section>
     );
 }
+
